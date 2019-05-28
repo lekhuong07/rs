@@ -1,11 +1,12 @@
 Calls function này để tạo ra tấm ảnh:
 - generate_picture(path, txt): 
 + path: path để đến directory chứa ảnh cần tạo.
-+ txt: text add-in có thể thay đổi được
++ txt: list các text add-in có thể thay đổi được, với tấm ảnh hiện tại là 3 addin text.
 
-
-Gồm 3 tấm ảnh sẽ được add đè trên background: phần góc trái, icon ở giữa và profile picture.
+3 tấm ảnh sẽ được add đè trên background: phần góc trái, icon ở giữa và profile picture.
+Hiện tại, thứ tự các tấm ảnh trong directory được mặc định là tấm background là đầu tiên, tấm ở giữa là thứ 2, góc trái màn hình là kế cuối và profile picture là cuối cùng
 - Add 3 tấm ảnh và fix cho nó phù hợp với background
+- Add phần text vào vị trí phù hợp
 - output tấm ảnh
 
 
