@@ -1,3 +1,14 @@
+Calls function này để tạo ra tấm ảnh:
+- generate_picture(path, txt): 
++ path: path để đến directory chứa ảnh cần tạo.
++ txt: text add-in có thể thay đổi được
+
+
+Gồm 3 tấm ảnh sẽ được add đè trên background: phần góc trái, icon ở giữa và profile picture.
+- Add 3 tấm ảnh và fix cho nó phù hợp với background
+- output tấm ảnh
+
+
 - Helper functions:
 + layer_on_bw(img, img2)
 img: ảnh background, có icon ở giữa và background của icon là đen
@@ -12,15 +23,6 @@ purple thing(img, img2) (chỉnh sửa phần icon tím)
 img: ảnh background
 img2: phần icon tím (sẽ được cắt ra ở generate.py)
 
-- generate_picture(path, txt): 
-+ path: path để đến directory chứa ảnh cần tạo.
-+ txt: text add-in có thể thay đổi được
-
-Calls function này để tạo ra tấm ảnh cần
-
-Gồm 3 tấm ảnh sẽ được add đè trên background: phần góc trái, icon ở giữa và profile picture.
-- Add 3 tấm ảnh và fix cho nó phù hợp với background
-- output tấm ảnh
 
 
 
