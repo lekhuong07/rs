@@ -1,0 +1,26 @@
+- Helper functions:
++ layer_on_bw(img, img2)
+img: ảnh background, có icon ở giữa và background của icon là đen
+img2: ảnh background
++ layer_on_topcorner // predict part and purple thing là topcorner's helper functions
+
+predict part(img, img2) (chỉnh sửa phần chữ "YOU PREDICT")
+img: ảnh background
+img2: phần "YOU PREDICT" (sẽ được cắt ra ở generate.py)
+
+purple thing(img, img2) (chỉnh sửa phần icon tím)
+img: ảnh background
+img2: phần icon tím (sẽ được cắt ra ở generate.py)
+
+- generate_picture(path, txt): 
++ path: path để đến directory chứa ảnh cần tạo.
++ txt: text add-in có thể thay đổi được
+
+Calls function này để tạo ra tấm ảnh cần
+
+Gồm 3 tấm ảnh sẽ được add đè trên background: phần góc trái, icon ở giữa và profile picture.
+- Add 3 tấm ảnh và fix cho nó phù hợp với background
+- output tấm ảnh
+
+
+
