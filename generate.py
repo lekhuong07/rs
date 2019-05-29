@@ -16,10 +16,7 @@ def click():
     else:
         button1.config(bg="green")
         button_flag = True
-root = tk.Tk()
-# create a frame and pack it
-frame1 = tk.Frame(root)
-frame1.pack(side=tk.TOP, fill=tk.X)
+
 
 def layer_on_bw(img, img2):
     img = img.convert("RGBA")
