@@ -2,6 +2,25 @@ from PIL import Image, ImageDraw, ImageFont
 import cv2, glob, os, requests
 import numpy
 
+import Tkinter as tk
+button_flag = True
+def click():
+    """
+    respond to the button click
+    """
+    global button_flag
+    # toggle button colors as a test
+    if button_flag:
+        button1.config(bg="white")
+        button_flag = False
+    else:
+        button1.config(bg="green")
+        button_flag = True
+root = tk.Tk()
+# create a frame and pack it
+frame1 = tk.Frame(root)
+frame1.pack(side=tk.TOP, fill=tk.X)
+
 def layer_on_bw(img, img2):
     img = img.convert("RGBA")
     data1 = img.getdata()
