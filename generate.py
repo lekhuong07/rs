@@ -4,8 +4,52 @@ import requests
 from io import BytesIO
 
 
-AVATAR = "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156184859638719&height=100&width=100&ext=1559899617&hash=AeQTBogsP-yCDOQq"
+AVATAR = "https://platform-lookaside.fbsbx.com/platform/profilepic/" \
+         "?asid=10156184859638719&height=100&width=100&ext=1559899617&hash=AeQTBogsP-yCDOQq"
 CATEGORY = "https://d3k9eq2976l0ly.cloudfront.net/images/1558678576.png"
+
+# initialize the list of reference points and boolean indicating
+# whether cropping is being performed or not
+refPt = []
+clicked = False
+
+import argparse, webbrowser, numpy
+APPLE_STORE = "https://www.apple.com/ios/app-store/"
+GG_PLAY = "https://play.google.com/store"
+
+
+def click_and_redirect(event, x, y, flags, param):
+    # grab references to the global variables
+    global refPt, clicked
+
+    if event == cv2.EVENT_LBUTTONDOWN:
+        refPt = [(x, y)]
+        clicked = True
+    # check to see if the left mouse button was released
+    elif event == cv2.EVENT_LBUTTONUP:
+        refPt.append((x, y))
+        clicked = False
+        if 626 < x < 797 and 12 < y < 59:
+            webbrowser.open(APPLE_STORE)
+        if 808 < x < 950 and 12 < y < 59:
+            webbrowser.open(GG_PLAY)
+
+
+def redirect_to_link (input_image):
+    input_image = cv2.cvtColor(numpy.array(input_image), cv2.COLOR_RGB2BGR)
+    clone = input_image.copy()
+    cv2.namedWindow("image")
+    cv2.setMouseCallback("image", click_and_redirect)
+    while True:
+        # display the image and wait for a keypress
+        cv2.imshow("image", input_image)
+        key = cv2.waitKey(1) & 0xFF
+
+        # if the 'c' key is pressed, break from the loop
+        if key == ord("c"):
+            break
+    cv2.destroyAllWindows()
+
 
 def layer_on_bw(img, img2):
     img = img.convert("RGBA")
@@ -24,6 +68,8 @@ def layer_on_bw(img, img2):
         i += 1
     img.putdata(newData)
     return img
+
+
 '''
 * corner part is divided into 2 parts:
 * predict part 
@@ -89,8 +135,8 @@ def generate_picture(path, category_link, avatar_link, txt):
 
     #c part:
     width, height = img1.size
-    img1 = img1.resize((int(width / 3.3), int(height / 3.3)))
-    img0.paste(img1, (368, 100))
+    img1 = img1.resize((int(width / 3.11), int(height / 3.11)))
+    img0.paste(img1, (361, 93))
     img0 = layer_on_bw(img0b, img0)
 
     #profile picture part:
@@ -119,6 +165,8 @@ def generate_picture(path, category_link, avatar_link, txt):
     img0.show()
     img0.save("finalresult.png")
 
+    # return img0
 
 if __name__ == '__main__':
     generate_picture(r'*png', CATEGORY, AVATAR, ["SINGAPORE FORMULA 1", "5%", "Lewis Hamilton."])
+    #redirect_to_link(test)
