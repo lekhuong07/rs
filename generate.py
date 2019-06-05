@@ -2,18 +2,14 @@ from PIL import Image, ImageDraw, ImageFont
 import cv2, glob
 import requests
 from io import BytesIO
+import webbrowser, numpy
 
-
-AVATAR = "https://platform-lookaside.fbsbx.com/platform/profilepic/" \
-         "?asid=10156184859638719&height=100&width=100&ext=1559899617&hash=AeQTBogsP-yCDOQq"
-CATEGORY = "https://d3k9eq2976l0ly.cloudfront.net/images/1558678576.png"
 
 # initialize the list of reference points and boolean indicating
 # whether cropping is being performed or not
 refPt = []
 clicked = False
 
-import argparse, webbrowser, numpy
 APPLE_STORE = "https://www.apple.com/ios/app-store/"
 GG_PLAY = "https://play.google.com/store"
 
@@ -51,14 +47,19 @@ def redirect_to_link (input_image):
     cv2.destroyAllWindows()
 
 
+
+AVATAR = "https://platform-lookaside.fbsbx.com/platform/profilepic/" \
+         "?asid=10156184859638719&height=100&width=100&ext=1559899617&hash=AeQTBogsP-yCDOQq"
+CATEGORY = "https://d3k9eq2976l0ly.cloudfront.net/images/1558678576.png"
+
+
 def layer_on_bw(img, img2):
     img = img.convert("RGBA")
     data1 = img.getdata()
-    img2  = img2.convert("RGBA")
+    img2 = img2.convert("RGBA")
     data2 = img2.getdata()
     newData = []
-    # data 1 original
-    # data 2 original with new black background image
+
     i = 0
     for item in data2:
         if item[0] == 0 and item[1] == 0 and item[2] == 0:
@@ -75,10 +76,13 @@ def layer_on_bw(img, img2):
 * predict part 
 * purple thing
 '''
+
+
 def layer_on_topcorner(img, img2):
     img = predict_part(img, img2)
     img = purple_thing(img, img2)
     return img
+
 
 def predict_part(img, img2):
     img = img.convert("RGBA")
@@ -86,8 +90,7 @@ def predict_part(img, img2):
     img2 = img2.convert("RGBA")
     data2 = img2.getdata()
     newData = []
-    # data 1 is the layer below
-    # data 2 is the layer on top
+
     i = 0
     for item in data2:
         if item[0] > 150 and item[1] > 150 and item[2] < 100:
@@ -96,8 +99,8 @@ def predict_part(img, img2):
             newData.append(data1[i])
         i += 1
     img.putdata(newData)
-    # img.show()
     return img
+
 
 def purple_thing(img, img2):
     img = img.convert("RGBA")
@@ -118,37 +121,29 @@ def purple_thing(img, img2):
     # img.show()
     return img
 
-#path: path to image's folder
-#txt: add-in text:
+
 def generate_picture(path, category_link, avatar_link, txt):
-    images = [file for file in glob.glob(path)]
-    print(images)
-    images.sort()
-    #get image to work
     img0 = Image.open('big.png')
+
     response1 = requests.get(category_link)
     img1 = Image.open(BytesIO(response1.content))
+
     response3 = requests.get(avatar_link)
     img3 = Image.open(BytesIO(response3.content))
     img0b = img0.copy()
-    #img0.show()
 
-    #c part:
     width, height = img1.size
     img1 = img1.resize((int(width / 3.11), int(height / 3.11)))
     img0.paste(img1, (361, 93))
     img0 = layer_on_bw(img0b, img0)
 
-    #profile picture part:
     width, height = img3.size
     draw = ImageDraw.Draw(img0)
     draw.rectangle(((53, 435), (115, 435+115-55)), fill="black")
-    #Add profile picture on black square
+
     img3 = img3.resize((int(width / (width / 60))+3, int(height / (height / 60))+1))
     img0.paste(img3, (53, 435))
 
-    #text part:
-    img0bt = img0.copy()
     fnt = ImageFont.truetype("arial.ttf", 22, encoding="unic")
     draw.text((width/2 + 350, 440), txt[0], font=fnt, fill="Yellow")
 
@@ -166,6 +161,7 @@ def generate_picture(path, category_link, avatar_link, txt):
     img0.save("finalresult.png")
 
     # return img0
+
 
 if __name__ == '__main__':
     generate_picture(r'*png', CATEGORY, AVATAR, ["SINGAPORE FORMULA 1", "5%", "Lewis Hamilton."])
