@@ -1,8 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
-import cv2, glob, os, requests
-import numpy
+import cv2, glob
 
-import Tkinter as tk
 button_flag = True
 def click():
     """
@@ -87,18 +85,20 @@ def purple_thing(img, img2):
 #txt: add-in text:
 def generate_picture(path, txt):
     images = [file for file in glob.glob(path)]
+    print(images)
     images.sort()
     #get image to work
-    img0   = Image.open(images[0])
-    img1 = Image.open(images[1])
-    img2 = Image.open(images[-1])
-    img3 = Image.open(images[-2])
+    img0 = Image.open('big.png')
+    img1 = Image.open('f1_2.png')
+    img2 = Image.open('youpredict.png')
+    img3 = Image.open('profilepic.png')
+    img0b = img0.copy()
     #img0.show()
 
     #mid part:
     width, height = img1.size
     img1 = img1.resize((int(width / 3.6), int(height / 3.6)))
-    img0b = img0.copy()
+
     img0.paste(img1, (398, 165))
     #img0.show()
     img0 = layer_on_bw(img0b, img0)
@@ -106,39 +106,35 @@ def generate_picture(path, txt):
 
     #top corner part
     width, height = img2.size
-    img2 = img2.resize((int(width / 3), int(height / 3)))
-    img2 = img2.crop((0, 8, int(width / 3), int(height / 3)))
+    img2 = img2.crop((0, 6, width, 95))
     img0.paste(img2, (10, 7))
     img0 = layer_on_topcorner(img0b, img0)
-    #img0.show()
 
     #profile picture part:
     width, height = img3.size
     draw = ImageDraw.Draw(img0)
     draw.rectangle(((58, 435), (115, 435+115-58)), fill="black") # size: (57, 57)
     #Add profile picture on black square
-    img3 = img3.resize((int(width / (width/57)), int(height / (height/57))))
     img0.paste(img3, (58, 435))
     #text part:
 
     img0bt = img0.copy()
-    draw.rectangle(((200, 435), (750, 520)), fill="black")
     fnt = ImageFont.truetype("arial.ttf", 22, encoding="unic")
-    draw.text((width/2 + 20, 440), txt[0], font=fnt, fill="Yellow")
-    #img0 = layer_on_bw(img0bt, img0)
+    draw.text((width/2 + 350, 440), txt[0], font=fnt, fill="Yellow")
+
     line1 = "Which driver will win the 2019 Singapore F1?"
     line2 = "Novi was among the " + " "*(len(txt[1])+2) + " who predicted " + " "*(len(txt[2])+2)
     fnt1 = ImageFont.truetype("arial.ttf", 20, encoding="unic")
-    draw.text((width / 4 + 100, 470), line1, font=fnt1, fill="White")
-    draw.text((width / 4 + 50, 490), line2, font=fnt1, fill=("White"))
+    draw.text((width / 4 + 300, 470), line1, font=fnt1, fill="White")
+    draw.text((width / 4 + 250, 490), line2, font=fnt1, fill=("White"))
 
     fnt2 = ImageFont.truetype("arial.ttf", 18, encoding="unic")
-    draw.text((width / 4 + 235, 492), txt[1], font=fnt2, fill=("Yellow"))
-    draw.text((width / 4 + 395, 492), txt[2], font=fnt2, fill=("Yellow"))
+    draw.text((width / 4 + 435, 492), txt[1], font=fnt2, fill=("Yellow"))
+    draw.text((width / 4 + 595, 492), txt[2], font=fnt2, fill=("Yellow"))
 
     img0.show()
     img0.save("finalresult.png")
 
+
 if __name__ == '__main__':
-    generate_picture(r'C:\Users\Khuong Le\Desktop\rs\*png', ["SINGAPORE FORMULA 1", "5%", "Lewis Hamilton."])
-    #layer_onto(r'C:\Users\Khuong Le\Desktop\rs\f1.png', r'C:\Users\Khuong Le\Desktop\rs\big.png')
+    generate_picture(r'*png', ["SINGAPORE FORMULA 1", "5%", "Lewis Hamilton."])
