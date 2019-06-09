@@ -4,7 +4,6 @@ import requests
 from io import BytesIO
 import webbrowser, numpy
 
-
 # initialize the list of reference points and boolean indicating
 # whether cropping is being performed or not
 refPt = []
@@ -31,7 +30,7 @@ def click_and_redirect(event, x, y, flags, param):
             webbrowser.open(GG_PLAY)
 
 
-def redirect_to_link (input_image):
+def redirect_to_link(input_image):
     input_image = cv2.cvtColor(numpy.array(input_image), cv2.COLOR_RGB2BGR)
     clone = input_image.copy()
     cv2.namedWindow("image")
@@ -47,11 +46,11 @@ def redirect_to_link (input_image):
     cv2.destroyAllWindows()
 
 
-
 AVATAR = "https://platform-lookaside.fbsbx.com/platform/profilepic/" \
          "?asid=10156184859638719&height=100&width=100&ext=1559899617&hash=AeQTBogsP-yCDOQq"
 CATEGORY = "https://d3k9eq2976l0ly.cloudfront.net/images/1558678576.png"
 
+DEFAULT_AVATAR = "https://d38qg0g88iwzaq.cloudfront.net/images/1551953912.png"
 
 def layer_on_bw(img, img2):
     img = img.convert("RGBA")
@@ -65,7 +64,7 @@ def layer_on_bw(img, img2):
         if item[0] == 0 and item[1] == 0 and item[2] == 0:
             newData.append(data1[i])
         else:
-           newData.append(item)
+            newData.append(item)
         i += 1
     img.putdata(newData)
     return img
@@ -139,16 +138,16 @@ def generate_picture(path, category_link, avatar_link, txt):
 
     width, height = img3.size
     draw = ImageDraw.Draw(img0)
-    draw.rectangle(((53, 435), (115, 435+115-55)), fill="black")
+    draw.rectangle(((53, 435), (115, 435 + 115 - 55)), fill="black")
 
-    img3 = img3.resize((int(width / (width / 60))+3, int(height / (height / 60))+1))
+    img3 = img3.resize((int(width / (width / 60)) + 3, int(height / (height / 60)) + 1))
     img0.paste(img3, (53, 435))
 
     fnt = ImageFont.truetype("arial.ttf", 22, encoding="unic")
-    draw.text((width/2 + 350, 440), txt[0], font=fnt, fill="Yellow")
+    draw.text((width / 2 + 350, 440), txt[0], font=fnt, fill="Yellow")
 
     line1 = "Which driver will win the 2019 Singapore F1?"
-    line2 = "Novi was among the " + " "*(len(txt[1])+2) + " who predicted " + " "*(len(txt[2])+2)
+    line2 = "Novi was among the " + " " * (len(txt[1]) + 2) + " who predicted " + " " * (len(txt[2]) + 2)
     fnt1 = ImageFont.truetype("arial.ttf", 20, encoding="unic")
     draw.text((width / 4 + 300, 470), line1, font=fnt1, fill="White")
     draw.text((width / 4 + 250, 490), line2, font=fnt1, fill=("White"))
@@ -164,5 +163,5 @@ def generate_picture(path, category_link, avatar_link, txt):
 
 
 if __name__ == '__main__':
-    generate_picture(r'*png', CATEGORY, AVATAR, ["SINGAPORE FORMULA 1", "5%", "Lewis Hamilton."])
-    #redirect_to_link(test)
+    generate_picture(r'*png', CATEGORY, DEFAULT_AVATAR, ["SINGAPORE FORMULA 1", "5%", "Lewis Hamilton."])
+    # redirect_to_link(test)
