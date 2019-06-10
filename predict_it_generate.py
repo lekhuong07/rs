@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import requests
 from io import BytesIO
 import time
@@ -57,31 +57,35 @@ def generate_picture(category_link, avatar_link, txt):
 
     width, height = img0.size
     fnt = ImageFont.truetype("assets/arial.ttf", 22, encoding="unic")
-    text_width, text_height = draw.textsize(txt[0])
-    draw.text(((width-text_width)/2-50, 440), txt[0], font=fnt, fill="Yellow")
+    text_width, text_height = fnt.getsize(txt[0])
+    draw.text(((width-text_width)/2, 440), txt[0], font=fnt, fill="Yellow")
 
     fnt1 = ImageFont.truetype("assets/arial.ttf", 20, encoding="unic")
     line1 = txt[1]
-    text_width, text_height = draw.textsize(line1)
-    draw.text(((width-text_width)/2-50, 465), line1, font=fnt1, fill="White")
+    text_width, text_height = fnt1.getsize(line1)
+    draw.text(((width-text_width)/2, 465), line1, font=fnt1, fill="White")
 
-    line2 = txt[4] + " was among the " + txt[2] + " who predicted " + txt[3]
+    line2 = txt[4] + " abc " + txt[2] + " yees " + txt[3]
     list_line2 = line2.split(" ")
-    text_width, text_height = draw.textsize(line2)
+    text_width, text_height = fnt1.getsize(line2)
 
-    width = (width-text_width)/2 - 75
+    width = (width-text_width)/2
     for e_text in list_line2:
         e_text_width, e_text_height = fnt1.getsize(e_text)
-        if e_text != txt[2] and e_text not in txt[3]:
+        if e_text in txt[-1] or e_text not in txt[3]:
             draw.text((width, 490), e_text, font=fnt1, fill="White")
         else:
             draw.text((width, 490), e_text, font=fnt1, fill="Yellow")
 
         width += e_text_width + 5
 
+    name_caps = txt[-1].upper()
+    name_caps_width, name_caps_height = fnt1.getsize(txt[-1].upper())
+    draw.text((abs(165 - name_caps_width)/2, 510), name_caps, font=fnt1, fill="White")
     img0.show()
+
     in_mem_file = BytesIO()
-    img0.save(in_mem_file, 'PNG', dpi=(300, 300))
+    img0.save(in_mem_file, 'PNG', dpi=(600, 600))
     key = 'trophies/{}_{}.{}'.format(int(time.time()), random.randint(0, 1000), 'png')
     in_mem_file.seek(0)
 
@@ -109,10 +113,10 @@ if __name__ == '__main__':
 
     '''
     generate_picture(CATEGORY, AVATAR, [
-        "SINGAPORE FORMULA 1",
-        "Which driver will win the 2019 Singapore F1?",
+        "SINGAPORE",
+        "Win the Singapore F1?",
         "100%",
-        "Lewis Steven Hamilton.",
-        "Novi"
+        "Filipe Massa.",
+        "Steven"
     ])
     '''
