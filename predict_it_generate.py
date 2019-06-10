@@ -30,7 +30,6 @@ DEFAULT_AVATAR = "https://d38qg0g88iwzaq.cloudfront.net/images/1551953912.png"
 
 def generate_picture(category_link, avatar_link, txt):
     img0 = Image.open('assets/banner_template.png')
-
     response = requests.get(category_link)
     img1 = Image.open(BytesIO(response.content))
 
@@ -65,7 +64,7 @@ def generate_picture(category_link, avatar_link, txt):
     text_width, text_height = fnt1.getsize(line1)
     draw.text(((width-text_width)/2, 465), line1, font=fnt1, fill="White")
 
-    line2 = txt[4] + " abc " + txt[2] + " yees " + txt[3]
+    line2 = txt[4] + " was among the " + txt[2] + " who predicted " + txt[3]
     list_line2 = line2.split(" ")
     text_width, text_height = fnt1.getsize(line2)
 
