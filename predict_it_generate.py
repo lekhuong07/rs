@@ -2,14 +2,12 @@ from PIL import Image, ImageDraw, ImageFont
 import requests
 from io import BytesIO
 
-DEFAULT_AVATAR = "https://d38qg0g88iwzaq.cloudfront.net/images/1551953912.png"
 
 import time
 import random
 import os
 from services.storage import storage
 from urllib.parse import urljoin
-
 
 def layer_on_bw(img, img2):
     img = img.convert("RGBA")
@@ -28,6 +26,7 @@ def layer_on_bw(img, img2):
     img.putdata(newData)
     return img
 
+DEFAULT_AVATAR = "https://d38qg0g88iwzaq.cloudfront.net/images/1551953912.png"
 
 def generate_picture(category_link, avatar_link, txt):
     #img0 = Image.open('assets/banner_template.png')
@@ -74,7 +73,7 @@ def generate_picture(category_link, avatar_link, txt):
     width = (width-text_width)/2 - 75
     for e_text in list_line2:
         e_text_width, e_text_height = fnt1.getsize(e_text)
-        if e_text != txt[2] and e_text != list_line2[-1] and e_text != list_line2[-2]:
+        if e_text != txt[2] and e_text not in txt[3]:
             draw.text((width, 490), e_text, font=fnt1, fill="White")
         else:
             draw.text((width, 490), e_text, font=fnt1, fill="Yellow")
@@ -82,6 +81,7 @@ def generate_picture(category_link, avatar_link, txt):
         width += e_text_width + 5
 
     img0.show()
+    print(img0.size)
     img0.save('in_mem_file.png')
 
     in_mem_file = BytesIO()
@@ -110,13 +110,12 @@ if __name__ == '__main__':
     ])
     print(url)
 
-
     '''
     generate_picture(CATEGORY, AVATAR, [
         "SINGAPORE FORMULA 1",
         "Which driver will win the 2019 Singapore F1?",
-        "5%",
-        "Lewis Hamilton.",
+        "100%",
+        "Lewis Steven Hamilton.",
         "Novi"
     ])
     '''
