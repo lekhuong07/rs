@@ -1,8 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import requests
 from io import BytesIO
-
-
 import time
 import random
 import os
@@ -26,7 +24,9 @@ def layer_on_bw(img, img2):
     img.putdata(newData)
     return img
 
+
 DEFAULT_AVATAR = "https://d38qg0g88iwzaq.cloudfront.net/images/1551953912.png"
+
 
 def generate_picture(category_link, avatar_link, txt):
     #img0 = Image.open('assets/banner_template.png')
@@ -81,8 +81,8 @@ def generate_picture(category_link, avatar_link, txt):
         width += e_text_width + 5
 
     img0.show()
-    print(img0.size)
-    img0.save('in_mem_file.png')
+    img0.save('in_mem_file.png', dpi=(300, 300))
+    #print(get.info['dpi'])
 
     in_mem_file = BytesIO()
     img0.save(in_mem_file, 'PNG')
@@ -93,6 +93,7 @@ def generate_picture(category_link, avatar_link, txt):
     CDN_ENDPOINT = os.getenv('CDN_ENDPOINT')
     storage.upload_file_obj(in_mem_file, BUCKET_NAME, key)
     return urljoin('{}'.format(CDN_ENDPOINT), key)
+
 
 if __name__ == '__main__':
     AVATAR = "https://platform-lookaside.fbsbx.com/platform/profilepic/" \
